@@ -7,8 +7,8 @@ import { generateToken, setAuthCookie } from '@/lib/auth';
 export async function POST(request: Request) {
   try {
     const { name, email, password } = await request.json();
-    
-    // Basic validation
+
+
     if (!name || !email || !password) {
       return NextResponse.json(
         { error: 'Name, email, and password are required' },
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     
     await connectToDatabase();
     
-    // Check if user already exists
+    
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -27,11 +27,11 @@ export async function POST(request: Request) {
       );
     }
     
-    // Hash the password
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     
-    // Create new user
+    
     const newUser = new User({
       name,
       email,
@@ -40,17 +40,16 @@ export async function POST(request: Request) {
     
     await newUser.save();
     
-    // Generate JWT token
+    
     const token = await generateToken({
       id: newUser._id.toString(),
       email: newUser.email,
       name: newUser.name
     });
     
-    // Set auth cookie
-    await setAuthCookie(token);
     
-    // Return user data (excluding password)
+    await setAuthCookie(token);
+   
     return NextResponse.json({
       id: newUser._id,
       name: newUser.name,

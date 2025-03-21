@@ -17,12 +17,12 @@ interface WeatherCardProps {
 export default function WeatherCard({ weatherData, isFavorite = false, onFavoriteToggle }: WeatherCardProps) {
   const [loading, setLoading] = useState(false);
   const [currentFavoriteState, setCurrentFavoriteState] = useState(isFavorite);
-  const [isRemoving, setIsRemoving] = useState(false);  // Add this state
+  const [isRemoving, setIsRemoving] = useState(false);  
   const { user } = useAuth();
   const iconUrl = `https://openweathermap.org/img/wn/${weatherData.weatherIcon}@2x.png`;
   const formattedDate = new Date(weatherData.timestamp * 1000).toLocaleString();
 
-  // Update local state when props change
+ 
   useEffect(() => {
     setCurrentFavoriteState(isFavorite);
   }, [isFavorite]);
@@ -32,19 +32,19 @@ export default function WeatherCard({ weatherData, isFavorite = false, onFavorit
     
     setLoading(true);
     
-    // If removing from favorites, show removal animation
+    
     if (currentFavoriteState && onFavoriteToggle) {
       setIsRemoving(true);
-      // Call the parent's callback directly - parent will handle the API call
+
       onFavoriteToggle();
-      return; // Exit early - parent component will handle the API call
+      return; 
     }
     
-    // For adding to favorites, proceed as before
+
     setCurrentFavoriteState(!currentFavoriteState);
     
     try {
-      // Only handle the "add to favorites" case here
+      
       if (!currentFavoriteState) {
         await axios.post('/api/favorites', {
           cityName: weatherData.cityName,
@@ -53,20 +53,20 @@ export default function WeatherCard({ weatherData, isFavorite = false, onFavorit
           lon: weatherData.lon || 0
         });
         
-        // Call parent callback if provided
+      
         if (onFavoriteToggle) {
           onFavoriteToggle();
         }
       }
     } catch (error: any) {
-      // ...existing error handling...
-      setCurrentFavoriteState(currentFavoriteState); // Revert on error
+      
+      setCurrentFavoriteState(currentFavoriteState); 
     } finally {
       setLoading(false);
     }
   };
 
-  // If removing, show a fade-out animation
+
   if (isRemoving) {
     return (
       <div className="animate-fadeOut">

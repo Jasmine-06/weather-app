@@ -2,10 +2,6 @@ import mockWeatherData from '@/data/mockWeatherData.json';
 import citiesData from '@/data/cities.json';
 
 
-
-
-
-
 export interface WeatherData {
   cityName: string;
   countryCode: string;
@@ -24,18 +20,18 @@ export interface WeatherData {
   lon?: number;
 }
 
-// Helper function to add random variation to temperature to simulate weather changes
+
 function addVariation(value: number, range: number = 2): number {
   const variation = (Math.random() * 2 - 1) * range;
   return Math.round((value + variation) * 10) / 10;
 }
 
-// Update the timestamp to current time
+
 function getCurrentTimestamp(): number {
   return Math.floor(Date.now() / 1000);
 }
 
-// Get mock weather data with some random variations to simulate changes
+
 function getMockWeatherWithVariation(cityName: string): WeatherData | null {
   const cityWeather = (mockWeatherData as Record<string, WeatherData>)[cityName];
   
@@ -54,7 +50,7 @@ function getMockWeatherWithVariation(cityName: string): WeatherData | null {
 }
 
 export async function getWeatherByCity(cityName: string): Promise<WeatherData> {
-  // Add a small artificial delay to simulate API call
+  
   await new Promise(resolve => setTimeout(resolve, 300));
   
   const weatherData = getMockWeatherWithVariation(cityName);
@@ -67,10 +63,10 @@ export async function getWeatherByCity(cityName: string): Promise<WeatherData> {
 }
 
 export async function getWeatherByCoordinates(lat: number, lon: number): Promise<WeatherData> {
-  // Add a small artificial delay to simulate API call
+ 
   await new Promise(resolve => setTimeout(resolve, 300));
   
-  // Find the closest city from our mock data based on coordinates
+  
   const cities = citiesData as Array<{name: string, country: string, lat: number, lon: number}>;
   
   let closestCity = '';
@@ -94,7 +90,7 @@ export async function getWeatherByCoordinates(lat: number, lon: number): Promise
     throw new Error(`Weather data not available for coordinates (${lat}, ${lon})`);
   }
   
-  // Add the coordinates to the weather data
+  
   return {
     ...weatherData,
     lat,

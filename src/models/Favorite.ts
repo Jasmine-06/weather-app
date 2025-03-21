@@ -28,7 +28,7 @@ const FavoriteSchema = new Schema({
   }
 });
 
-// Create a compound index to prevent duplicate favorites for a user
+
 FavoriteSchema.index({ userId: 1, cityName: 1 }, { unique: true });
 
 export default mongoose.models.Favorite || mongoose.model('Favorite', FavoriteSchema);

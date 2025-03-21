@@ -33,7 +33,8 @@ export function useAuth() {
   });
   const router = useRouter();
 
-  // Fetch the current user when the hook is initialized
+  
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -47,7 +48,7 @@ export function useAuth() {
         setAuth({
           user: null,
           loading: false,
-          error: null, // Don't show error for unauthenticated users
+          error: null, 
         });
       }
     };
@@ -55,7 +56,7 @@ export function useAuth() {
     fetchUser();
   }, []);
 
-  // Login function
+  
   const login = async (credentials: LoginCredentials) => {
     setAuth(prev => ({ ...prev, loading: true, error: null }));
     
@@ -77,7 +78,7 @@ export function useAuth() {
     }
   };
 
-  // Register function
+
   const register = async (credentials: RegisterCredentials) => {
     setAuth(prev => ({ ...prev, loading: true, error: null }));
     
@@ -99,7 +100,8 @@ export function useAuth() {
     }
   };
 
-  // Logout function
+  
+  
   const logout = async () => {
     try {
       await axios.post('/api/auth/logout');

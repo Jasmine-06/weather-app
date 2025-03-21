@@ -67,7 +67,7 @@ export async function DELETE(
     
     const favoriteId = context.params.favoriteId;
     
-    // Check if it's a valid MongoDB ObjectId
+    
     if (!mongoose.Types.ObjectId.isValid(favoriteId)) {
       return NextResponse.json(
         { error: 'Invalid favorite ID format' }, 

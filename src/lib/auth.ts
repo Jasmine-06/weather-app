@@ -13,20 +13,21 @@ export interface UserJwtPayload {
   name: string;
 }
 
-// Convert expiration time from string to seconds
+
 function getExpirationTime(): number {
   if (JWT_EXPIRES_IN.endsWith('d')) {
     return parseInt(JWT_EXPIRES_IN) * 24 * 60 * 60;
   } else if (JWT_EXPIRES_IN.endsWith('h')) {
     return parseInt(JWT_EXPIRES_IN) * 60 * 60;
   } else {
-    return 7 * 24 * 60 * 60; // Default to 7 days
+    return 7 * 24 * 60 * 60;
   }
 }
 
-// Generate JWT token using jose
+
 export async function generateToken(user: UserJwtPayload): Promise<string> {
-  // Ensure the same secret is used for signing and verification
+ 
+
   const secret = new TextEncoder().encode(JWT_SECRET);
   
   return await new SignJWT({ 
@@ -40,10 +41,11 @@ export async function generateToken(user: UserJwtPayload): Promise<string> {
     .sign(secret);
 }
 
-// Verify and decode JWT token
+
+
 export async function verifyToken(token: string): Promise<UserJwtPayload | null> {
   try {
-    // Use the exact same secret as in generateToken
+    
     const secret = new TextEncoder().encode(JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
     return payload as unknown as UserJwtPayload;
@@ -53,7 +55,7 @@ export async function verifyToken(token: string): Promise<UserJwtPayload | null>
   }
 }
 
-// Set auth cookie
+
 export async function setAuthCookie(token: string): Promise<void> {
   const maxAge = getExpirationTime();
   
@@ -68,14 +70,14 @@ export async function setAuthCookie(token: string): Promise<void> {
   });
 }
 
-// Delete auth cookie
+
 export async function deleteAuthCookie(): Promise<void> {
   (await cookies()).delete('auth_token');
 }
 
-// Get user from request - only use in server routes, not middleware
+
 export async function getUserFromRequest(req: NextRequest) {
-  // For API routes that don't use middleware
+  
   const authToken = req.cookies.get('auth_token')?.value;
   
   if (!authToken) {
@@ -98,7 +100,7 @@ export async function getUserFromRequest(req: NextRequest) {
   }
 }
 
-// Get current user from server component
+
 export async function getCurrentUser() {
   const authToken = (await cookies()).get('auth_token')?.value;
   

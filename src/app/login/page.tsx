@@ -27,7 +27,7 @@ export default function Login() {
     
     try {
       await login({ email, password });
-      // No need to redirect, the login function handles that
+      
     } catch (error: any) {
     } finally {
       setIsLoading(false);

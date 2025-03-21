@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   
   const router = useRouter();
 
-  // Fetch user data on mount
+
   const refreshUser = async () => {
     try {
       const response = await axios.get('/api/auth/me');
@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAuth({
         user: null,
         loading: false,
-        error: null, // Don't show error for unauthenticated users
+        error: null,
       });
       return null;
     }
@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refreshUser();
   }, []);
 
-  // Login function
+
   const login = async (credentials: { email: string; password: string }) => {
     setAuth(prev => ({ ...prev, loading: true, error: null }));
     
@@ -82,7 +82,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Register function
+  
+
   const register = async (credentials: { name: string; email: string; password: string }) => {
     setAuth(prev => ({ ...prev, loading: true, error: null }));
     
@@ -105,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Logout function
+
   const logout = async () => {
     try {
       await axios.post('/api/auth/logout');

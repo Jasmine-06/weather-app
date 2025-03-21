@@ -24,21 +24,21 @@ export default function FavoritesPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // Redirect if not logged in
+ 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
     }
   }, [user, loading, router]);
 
-  // Fetch favorites when component mounts
+  
   useEffect(() => {
     if (user) {
       fetchFavorites();
     }
   }, [user]);
 
-  // Fetch weather data for all favorites
+  
   useEffect(() => {
     const fetchWeatherForFavorites = async () => {
       if (favorites.length === 0) return;
@@ -56,7 +56,7 @@ export default function FavoritesPage() {
 
       try {
         const results = await Promise.all(weatherPromises);
-        // Fix the TypeScript error by properly typing the reducer
+        
         const weatherDataMap = results.reduce<Record<string, WeatherData>>((acc, data) => {
           if (data) {
             return { ...acc, ...data };
@@ -92,7 +92,7 @@ export default function FavoritesPage() {
 
   const handleRemoveFavorite = async (cityId: string) => {
     try {
-      // Immediately remove from UI first (optimistic update)
+      
       setFavorites(prev => prev.filter(fav => fav._id !== cityId));
       setWeatherData(prev => {
         const newData = { ...prev };
@@ -100,10 +100,10 @@ export default function FavoritesPage() {
         return newData;
       });
       
-      // Then make the API call
+      
       await axios.delete(`/api/favorites/${cityId}`);
     } catch (err) {
-      // If the API call fails, restore the data (fetch favorites again)
+      
       fetchFavorites();
       setError("Failed to remove city from favorites");
     }

@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
     
-    // Basic validation
+    
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     
     await connectToDatabase();
     
-    // Find user by email
+    
     const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json(
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       );
     }
     
-    // Check password
+    
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return NextResponse.json(
@@ -36,17 +36,17 @@ export async function POST(request: Request) {
       );
     }
     
-    // Generate JWT token
+    
     const token = await generateToken({
       id: user._id.toString(),
       email: user.email,
       name: user.name
     });
     
-    // Set auth cookie
+   
     await setAuthCookie(token);
     
-    // Return user data (excluding password)
+   
     return NextResponse.json({
       id: user._id,
       name: user.name,

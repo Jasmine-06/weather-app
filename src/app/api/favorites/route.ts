@@ -4,7 +4,7 @@ import { connectToDatabase } from '@/lib/mongodb';
 import Favorite from '@/models/Favorite';
 import { getUserFromRequest } from '@/lib/auth';
 
-// Get all favorites for a user
+
 export async function GET(request: NextRequest) {
   try {
     const user = await getUserFromRequest(request);
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Add a new favorite
+
 export async function POST(request: NextRequest) {
   try {
     const user = await getUserFromRequest(request);
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     
     await connectToDatabase();
     
-    // Check if city already exists in favorites before adding
+
     const existingFavorite = await Favorite.findOne({
       userId: user.id,
       cityName: cityName
@@ -77,8 +77,8 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(favorite);
   } catch (error: any) {
-    
-    // Better error handling for duplicate key errors
+  
+
     if (error.code === 11000) {
       return NextResponse.json(
         { error: 'City is already in favorites' }, 
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Delete a favorite
+
 export async function DELETE(request: NextRequest) {
   try {
     const user = await getUserFromRequest(request);

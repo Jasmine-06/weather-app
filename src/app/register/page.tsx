@@ -35,7 +35,7 @@ export default function Register() {
     
     try {
       await register({ name, email, password });
-      // No need to redirect, the register function handles that
+      
     } catch (error: any) {
 
     } finally {
